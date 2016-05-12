@@ -54,7 +54,13 @@
 #include <QtLocation/private/qgeotiledmapdata_p.h>
 #else
 #include <QtLocation/private/qgeotiledmap_p.h>
+#if QT_VERSION >= 0x050600
+#include <QtLocation/private/qgeofiletilecache_p.h>
+#else
+#include <QtLocation/private/qgeotilecache_p.h>
 #endif
+#endif
+
 #include <QDir>
 #include <QStandardPaths>
 
@@ -194,10 +200,12 @@ QGeoTiledMappingManagerEngineQGC::_setCache(const QVariantMap &parameters)
     if (parameters.contains(QStringLiteral("mapping.cache.directory")))
         cacheDir = parameters.value(QStringLiteral("mapping.cache.directory")).toString();
     else {
-        cacheDir = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QLatin1String("/QGCMapCache55");
-        if(!QDir::root().mkpath(cacheDir)) {
-            qWarning() << "Could not create mapping disk cache directory: " << cacheDir;
-            cacheDir = QDir::homePath() + QLatin1String("/.qgcmapscache/");
+        cacheDir = getQGCMapEngine()->getCachePath();
+        if(!QFileInfo(cacheDir).exists()) {
+            if(!QDir::root().mkpath(cacheDir)) {
+                qWarning() << "Could not create mapping disk cache directory: " << cacheDir;
+                cacheDir = QDir::homePath() + QLatin1String("/.qgcmapscache/");
+            }
         }
     }
     if(!QFileInfo(cacheDir).exists()) {
@@ -223,7 +231,12 @@ QGeoTiledMappingManagerEngineQGC::_setCache(const QVariantMap &parameters)
     if(memLimit < 1024 * 1024)
         memLimit = 1024 * 1024;
     //-- Disable Qt's disk cache (set memory cache otherwise Qtlocation won't work)
+#if QT_VERSION >= 0x050600
+    QAbstractGeoTileCache *pTileCache = new QGeoFileTileCache(cacheDir);
+    setTileCache(pTileCache);
+#else
     QGeoTileCache* pTileCache = createTileCacheWithDir(cacheDir);
+#endif
     if(pTileCache)
     {
         //-- We're basically telling it to use 100k of disk for cache. It doesn't like

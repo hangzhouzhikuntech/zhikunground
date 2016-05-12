@@ -252,12 +252,19 @@ Item {
             }
         }
 
-       ExternalDeviceComponent {
-             id:                         extcontroller
-             //factPanel:                  panel
-             //onResetStatusTextArea: statusLog.text = statusTextAreaDefaultText
 
-         }
+
+       Component {
+           id: gimbalDialog
+
+           GimbalDialog {
+           }
+       }
+
+       /*QSonyCameraView
+       {
+           id: cameraView
+       }*/
 
         //-- cloudplatform Control
         RoundButton {
@@ -267,8 +274,11 @@ Item {
             exclusiveGroup:     _dropButtonsExclusiveGroup
             z:                  QGroundControl.zOrderWidgets
             onClicked: {
-                extcontroller._showGimbalDialog();
-                checked = false
+                //extcontroller._showGimbalDialog();
+                root.showDialog(gimbalDialog, "Gimbal Adjust", root.showDialogFullWidth,StandardButton.Close)
+                //checked = false
+                //cameraView.openView()
+
             }//end onclick
         }//end roundbutton
         

@@ -41,7 +41,9 @@ class QGCMapEngineManager;
 class QGCApplication;
 class QGCImageProvider;
 class UASMessageHandler;
+#ifdef Q_SUPPORT_ASR
 class GAsrOutput;
+#endif
 
 /// This is used to manage all of our top level services/tools
 class QGCToolbox {
@@ -63,7 +65,9 @@ public:
     QGCMapEngineManager*        mapEngineManager(void)          { return _mapEngineManager; }
     QGCImageProvider*           imageProvider()                 { return _imageProvider; }
     UASMessageHandler*          uasMessageHandler(void)         { return _uasMessageHandler; }
+#if defined Q_SUPPORT_ASR
     GAsrOutput*               asrOutput(void)               { return _asrOutput; }
+#endif
 private:
     GAudioOutput*               _audioOutput;
     AutoPilotPluginManager*     _autopilotPluginManager;
@@ -79,7 +83,9 @@ private:
     MultiVehicleManager*        _multiVehicleManager;
     QGCMapEngineManager*         _mapEngineManager;
     UASMessageHandler*          _uasMessageHandler;
+#ifdef Q_SUPPORT_ASR
     GAsrOutput*                 _asrOutput;
+#endif
 };
 
 /// This is the base class for all tools

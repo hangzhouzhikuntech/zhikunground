@@ -32,13 +32,16 @@
 #include "UASInterface.h"
 #include "AutoPilotPlugin.h"
 #include "QGCLoggingCategory.h"
-#include "FactPanelController.h"
+#if defined(ANDROID)
+#include "GimbalController.h"
+#else
 #include "GimbalDialog.h"
+#endif
 
 Q_DECLARE_LOGGING_CATEGORY(ExternalDeviceComponentLog)
 
 /// Sensors Component MVC Controller for SensorsComponent.qml.
-class ExternalDeviceComponent : public FactPanelController
+class ExternalDeviceComponent : public QObject
 {
     Q_OBJECT
 
@@ -50,18 +53,17 @@ public:
     Q_INVOKABLE void _appendStatusLog(const QString& text);
 
     Q_INVOKABLE void controlExternalDevices(qint8 extType,qint32 *params = NULL);
-    Q_INVOKABLE void _showGimbalDialog();
+    Q_INVOKABLE void gimbalChanged(int data,int data_type);
 private slots:
-    void _gimbalChanged(int data,int data_type);
     void _gimbalStartAdjust();
     void _gimbalStopAdjust();
 protected:
     /*Vehicle*            _vehicle;
     UASInterface*       _uas;
     AutoPilotPlugin*    _autopilot;*/
-
+signals:
+    void InitOK();
 private:
-    GimbalDialog * _gimbalDialog;
     QQuickItem* _statusLog;
     };
 

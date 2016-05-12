@@ -90,7 +90,8 @@ bool GAudioOutput::isMuted()
 }
 bool GAudioOutput::isPlaying()
 {
-    return worker->isPlaying();
+    //return worker->isPlaying();
+    return false;
 }
 void GAudioOutput::noticeTips(int noticeType, int severity)
 {

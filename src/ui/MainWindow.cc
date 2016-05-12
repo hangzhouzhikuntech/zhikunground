@@ -43,7 +43,9 @@ This file is part of the QGROUNDCONTROL project
 #include "MAVLinkProtocol.h"
 #include "MainWindow.h"
 #include "GAudioOutput.h"
+#if  defined Q_SUPPORT_ASR
 #include "GAsrOutput.h"
+#endif
 #ifndef __mobile__
 #include "QGCMAVLinkLogPlayer.h"
 #endif
@@ -408,7 +410,9 @@ void MainWindow::switchSpeechControlModeCallback()
      {
          //if (!qgcApp()->runningUnitTests())
          //    qgcApp()->toolbox()->audioOutput()->say(QString("Now you have switched into the speech control mode."), GAudioOutput::AUDIO_SEVERITY_NOTICE);
+#if  defined Q_SUPPORT_ASR
          qgcApp()->toolbox()->asrOutput()->_startAsring();
+#endif
          //qgcApp()->_getAsrWorker()->init();
      }
      else

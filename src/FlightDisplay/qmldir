@@ -2,4 +2,6 @@ Module QGroundControl.FlightDisplay
 
 FlightDisplayView           1.0 FlightDisplayView.qml
 FlightDisplayViewMap        1.0 FlightDisplayViewMap.qml
+GimbalDialog                1.0 GimbalDialog.qml
+Gimbaltest                  1.0 Gimbaltest.qml
 

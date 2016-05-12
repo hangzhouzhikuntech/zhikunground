@@ -246,14 +246,15 @@ void QGCAudioWorker::saySyn(QString inText, int severity)
 {
     say(inText, severity);
 
-    while(espeak_IsPlaying())
+    /*while(espeak_IsPlaying())
     {
         QGC::SLEEP::msleep(100);
-    }
+    }*/
 }
 bool QGCAudioWorker::isPlaying()
 {
-    return espeak_IsPlaying();
+    //return espeak_IsPlaying();
+    return false;
 }
 /*void QGCAudioWorker::saySynCallbackForAsr()
 {

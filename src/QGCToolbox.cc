@@ -35,7 +35,6 @@
 #include "QGCImageProvider.h"
 #include "UASMessageHandler.h"
 #include "QGCMapEngineManager.h"
-#include "GAsrOutput.h"
 
 QGCToolbox::QGCToolbox(QGCApplication* app)
     : _audioOutput(NULL)
@@ -52,7 +51,9 @@ QGCToolbox::QGCToolbox(QGCApplication* app)
     , _multiVehicleManager(NULL)
     , _mapEngineManager(NULL)
     , _uasMessageHandler(NULL)
+#ifdef Q_SUPPORT_ASR
     ,_asrOutput(NULL)
+#endif
 {
     _audioOutput =              new GAudioOutput(app);
     _autopilotPluginManager =   new AutoPilotPluginManager(app);
@@ -68,7 +69,9 @@ QGCToolbox::QGCToolbox(QGCApplication* app)
     _multiVehicleManager =      new MultiVehicleManager(app);
     _mapEngineManager =       new QGCMapEngineManager(app);
     _uasMessageHandler =        new UASMessageHandler(app);
+#ifdef Q_SUPPORT_ASR
     _asrOutput         =        new GAsrOutput(app);
+#endif
 
     _audioOutput->setToolbox(this);
     _autopilotPluginManager->setToolbox(this);
@@ -84,7 +87,9 @@ QGCToolbox::QGCToolbox(QGCApplication* app)
     _multiVehicleManager->setToolbox(this);
     _mapEngineManager->setToolbox(this);
     _uasMessageHandler->setToolbox(this);
+#ifdef Q_SUPPORT_ASR
     _asrOutput->setToolbox(this);
+#endif
 }
 
 QGCToolbox::~QGCToolbox()
@@ -102,7 +107,9 @@ QGCToolbox::~QGCToolbox()
     delete _mapEngineManager;
     delete _multiVehicleManager;
     delete _uasMessageHandler;
+#ifdef Q_SUPPORT_ASR
     delete _asrOutput;
+#endif
 }
 
 QGCTool::QGCTool(QGCApplication* app)

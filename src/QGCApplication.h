@@ -48,7 +48,9 @@
 #include "AutoPilotPluginManager.h"
 #include "UASMessageHandler.h"
 #include "FactSystem.h"
+#if defined Q_SUPPORT_ASR
 #include "QGCAsrWorker.h"
+#endif
 #ifdef QGC_RTLAB_ENABLED
 #include "OpalLink.h"
 #endif
@@ -177,7 +179,9 @@ public:
     /*add by xuzhitong*/
     void _setSpeechControlMode(bool modFlag);
     bool _getSpeechControlMode(void);
+#ifdef Q_SUPPORT_ASR
     QGCAsrWorker *_getAsrWorker(void);
+#endif
     static QGCApplication*  _app;   ///< Our own singleton. Should be reference directly by qgcApp
 
 private slots:
@@ -209,9 +213,10 @@ private:
 #endif
 
     QGCToolbox* _toolbox;
-
+#ifdef Q_SUPPORT_ASR
     //add by xuzhitong
     QGCAsrWorker *_asrWorker;
+#endif
 
     bool _bluetoothAvailable;
 

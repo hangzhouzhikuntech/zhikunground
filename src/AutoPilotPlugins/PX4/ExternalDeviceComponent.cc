@@ -36,17 +36,12 @@ QGC_LOGGING_CATEGORY(ExternalDeviceComponentLog, "ExternalDeviceComponentrLog")
 
 ExternalDeviceComponent::ExternalDeviceComponent(void) :
     _statusLog(NULL)
-  , _gimbalDialog(NULL)
 {
-    _gimbalDialog = new GimbalDialog();
-    connect(_gimbalDialog,&GimbalDialog::gimbalChanged,this,&ExternalDeviceComponent::_gimbalChanged);
-    connect(_gimbalDialog,&GimbalDialog::gimbalStartAdjust,this,&ExternalDeviceComponent::_gimbalStartAdjust);
-    connect(_gimbalDialog,&GimbalDialog::gimbalStopAdjust,this,&ExternalDeviceComponent::_gimbalStopAdjust);
+    emit InitOK();
 }
 
 ExternalDeviceComponent::~ExternalDeviceComponent()
 {
-    delete _gimbalDialog;
 }
 /// Appends the specified text to the status log area in the ui
 void ExternalDeviceComponent::_appendStatusLog(const QString& text)
@@ -107,21 +102,19 @@ void ExternalDeviceComponent::_gimbalStopAdjust()
     }
     //controlExternalDevices(UASInterface::StartExternalDeviceRollGimbal,params);
 }
-void ExternalDeviceComponent::_showGimbalDialog()
-{
-    //_startLogCalibration();
-    _gimbalDialog->exec();
-
-
-}
 void ExternalDeviceComponent::controlExternalDevices(qint8 extType,qint32 *params)
 {
     //_startLogCalibration();
     //UASInterface::StartExternalDeviceType
     qDebug()<<"ExternalDeviceComponent::controlExternalDevices:"<<extType;
-    if (_uas)
-    {
-        _uas->controlExternalDevices((UASInterface::StartExternalDeviceType)extType,params);
+    Vehicle* vehicle = qgcApp()->toolbox()->multiVehicleManager()->activeVehicle();
+
+    if (vehicle) {
+        UASInterface *uas = vehicle->uas();
+        if (uas)
+        {
+            uas->controlExternalDevices((UASInterface::StartExternalDeviceType)extType,params);
+        }
     }
 }
 

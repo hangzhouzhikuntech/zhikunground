@@ -25,16 +25,14 @@
 #include <QDesktopWidget>
 
 #include "GimbalDialog.h"
-#include "MainWindow.h"
-#include "ui_SettingsDialog.h"
+//#include "MainWindow.h"
+//#include "ui_SettingsDialog.h"
 
 #include "LinkManager.h"
 #include "MAVLinkProtocol.h"
 #include "MAVLinkSettingsWidget.h"
 #include "GAudioOutput.h"
 #include "QGCApplication.h"
-#include "QGCFileDialog.h"
-#include "QGCMessageBox.h"
 #include "MainToolBarController.h"
 #include "FlightMapSettings.h"
 

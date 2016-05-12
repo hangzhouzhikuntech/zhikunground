@@ -273,7 +273,7 @@ QGCView {
     }
     ExternalDeviceComponent {
          id:                         extcontroller
-         factPanel:                  panel
+         //factPanel:                  panel
          statusLog:                  statusTextArea
          //onResetStatusTextArea: statusLog.text = statusTextAreaDefaultText
 

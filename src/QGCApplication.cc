@@ -101,7 +101,10 @@
 #include "PX4AirframeLoader.h"
 #include "ValuesWidgetController.h"
 #include "ExternalDeviceComponent.h"
+
+#ifdef Q_SUPPORT_ASR
 #include "QGCAsrWorker.h"
+#endif
 #ifndef __ios__
     #include "SerialLink.h"
 #endif
@@ -123,6 +126,11 @@
 #include <unistd.h>
 #include <sys/types.h>
 #endif
+#endif
+
+#ifdef __android__
+#include "viewCamera_android.h"
+#include "viewcamera_controller.h"
 #endif
 
 QGCApplication* QGCApplication::_app = NULL;
@@ -469,6 +477,13 @@ void QGCApplication::_initCommon(void)
     qmlRegisterType<LogDownloadController>          ("QGroundControl.Controllers", 1, 0, "LogDownloadController");
 #endif
 
+#ifdef __android__
+    qmlRegisterType<CameraView>          ("QGroundControl.Controllers", 1, 0, "CameraView");
+    qmlRegisterType<QSonyCameraView>          ("QGroundControl.Controllers", 1, 0, "QSonyCameraView");
+     qmlRegisterType<LiveViewPaintWorker>          ("QGroundControl.Controllers", 1, 0, "LiveViewPaintWorker");
+    qmlRegisterType<QSonyCameraController>          ("QGroundControl.Controllers", 1, 0, "QSonyCameraController");
+#endif
+
     // Register Qml Singletons
     qmlRegisterSingletonType<QGroundControlQmlGlobal>   ("QGroundControl",                          1, 0, "QGroundControl",         qgroundcontrolQmlGlobalSingletonFactory);
     qmlRegisterSingletonType<ScreenToolsController>     ("QGroundControl.ScreenToolsController",    1, 0, "ScreenToolsController",  screenToolsControllerSingletonFactory);
@@ -758,6 +773,7 @@ void QGCApplication::showMessage(const QString& message)
     }
 }
 
+
 void QGCApplication::showFlyView(void)
 {
     QMetaObject::invokeMethod(_rootQmlObject(), "showFlyView");
@@ -821,7 +837,9 @@ bool QGCApplication::_getSpeechControlMode(void)
 {
     return _speechControlMode;
 }
+#ifdef Q_SUPPORT_ASR
 QGCAsrWorker* QGCApplication::_getAsrWorker(void)
 {
     return _asrWorker;
 }
+#endif

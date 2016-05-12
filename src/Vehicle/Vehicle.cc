@@ -35,7 +35,9 @@
 #include "QGCApplication.h"
 #include "QGCImageProvider.h"
 #include "GAudioOutput.h"
+#if  defined Q_SUPPORT_ASR
 #include "GAsrOutput.h"
+#endif
 
 QGC_LOGGING_CATEGORY(VehicleLog, "VehicleLog")
 
@@ -229,9 +231,11 @@ Vehicle::Vehicle(LinkInterface*             link,
     connect(&_mapTrajectoryTimer, &QTimer::timeout, this, &Vehicle::_addNewMapTrajectoryPoint);
 
     //add by xuzhitong
+#if  defined Q_SUPPORT_ASR
     GAsrOutput *pasrOutput = qgcApp()->toolbox()->asrOutput();
     //qDebug()<<"pasrOutput11111111111111111111111111";
     connect(pasrOutput,&GAsrOutput::stopAsring,this,&Vehicle::_externalDeviceOperation);
+#endif
 
     // Build FactGroup object model
 

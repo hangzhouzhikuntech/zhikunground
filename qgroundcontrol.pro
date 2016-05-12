@@ -213,6 +213,7 @@ INCLUDEPATH += \
 FORMS += \
     src/ui/MainWindow.ui \
     src/QGCQmlWidgetHolder.ui \
+    #src/ui/GimbalDialog.ui
 
 !MobileBuild {
 FORMS += \
@@ -235,8 +236,7 @@ FORMS += \
     src/ui/SettingsDialog.ui \
     src/ui/uas/UASQuickView.ui \
     src/ui/uas/UASQuickViewItemSelect.ui \
-    src/ui/UASInfo.ui \
-    src/ui/GimbalDialog.ui \
+    src/ui/UASInfo.ui
 }
 
 HEADERS += \
@@ -298,19 +298,24 @@ HEADERS += \
     src/QmlControls/QGCImageProvider.h \
     src/AutoPilotPlugins/APM/APMRemoteParamsDownloader.h \
     src/QtLocationPlugin/QMLControl/QGCMapEngineManager.h \
-    src/asr/QGCAsrWorker.h \
-    src/GAsrOutput.h \
-    libs/qisr/inc/qisr.h \
-    libs/qisr/inc/msp_cmn.h \
-    libs/qisr/inc/msp_types.h \
-    libs/qisr/inc/msp_errors.h \
-    src/ui/GimbalDialog.h
+    #src/ui/GimbalDialog.h \
+    #src/FlightDisplay/GimbalController.h
 
 DebugBuild {
 HEADERS += \
     src/comm/MockLink.h \
     src/comm/MockLinkFileServer.h \
     src/comm/MockLinkMissionItemHandler.h \
+}
+
+LinuxBuild {
+HEADERS += \
+    src/asr/QGCAsrWorker.h \
+    src/GAsrOutput.h \
+    libs/qisr/inc/qisr.h \
+    libs/qisr/inc/msp_cmn.h \
+    libs/qisr/inc/msp_types.h \
+    libs/qisr/inc/msp_errors.h \
 }
 
 WindowsBuild {
@@ -327,6 +332,13 @@ contains(DEFINES, QGC_ENABLE_BLUETOOTH) {
 HEADERS += \
     src/comm/QGCSerialPortInfo.h \
     src/comm/SerialLink.h \
+}
+
+AndroidBuild {
+HEADERS += \
+    src/FlightDisplay/viewCamera_android.h \
+    src/FlightDisplay/viewcamera_controller.h \
+    src/FlightDisplay/camerasurfaceview.h \
 }
 
 !MobileBuild {
@@ -433,9 +445,8 @@ SOURCES += \
     src/AutoPilotPlugins/APM/APMRemoteParamsDownloader.cc \
     src/QtLocationPlugin/QMLControl/QGCMapEngineManager.cc \
     src/AutoPilotPlugins/PX4/ExternalDeviceComponent.cc \
-    src/asr/QGCAsrWorker.cc \
-    src/GAsrOutput.cc \
-    src/ui/GimbalDialog.cc
+    #src/ui/GimbalDialog.cc \
+    #src/FlightDisplay/GimbalController.cc
 
 DebugBuild {
 SOURCES += \
@@ -444,10 +455,25 @@ SOURCES += \
     src/comm/MockLinkMissionItemHandler.cc \
 }
 
+LinuxBuild {
+SOURCES += \
+    src/asr/QGCAsrWorker.cc \
+    src/GAsrOutput.cc \
+}
+
 !iOSBuild {
 SOURCES += \
     src/comm/QGCSerialPortInfo.cc \
     src/comm/SerialLink.cc \
+}
+
+
+AndroidBuild {
+QT += androidextras
+SOURCES += \
+    src/FlightDisplay/viewCamera_android.cc \
+    src/FlightDisplay/camerasurfaceview.cc \
+    src/FlightDisplay/viewcamera_controller.cc \
 }
 
 contains(DEFINES, QGC_ENABLE_BLUETOOTH) {
@@ -798,9 +824,11 @@ include(QGCSetup.pri)
 
 include(QGCInstaller.pri)
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/qisr/release/ -lmsc
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/qisr/debug/ -lmsc
-else:unix: LIBS += -L$$PWD/libs/qisr/ -lmsc
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/qisr/release/ -lmsc
+#else:win32:CONFIG(debug, debug|release):
+#else:unix: LIBS += -L$$PWD/libs/qisr/ -lmsc
 
-INCLUDEPATH += $$PWD/libs/qisr
-DEPENDPATH += $$PWD/libs/qisr
+#INCLUDEPATH += $$PWD/libs/qisr
+#DEPENDPATH += $$PWD/libs/qisr
+
+
